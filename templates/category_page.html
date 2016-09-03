@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog App</title>
+</head>
+<body>
+
+    <h1>Catalog App</h1>
+
+    <div class="categories">
+        <h2>Categories</h2>
+        <ul>
+            {% for category in categories %}
+            <li><a>{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="latest_items">
+        <h2>{{ category_name }} Items</h2>
+        <ul>
+            {% for item in category_items %}
+            <li><a>{{ item.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
