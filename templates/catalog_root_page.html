@@ -18,6 +18,9 @@
     </div>
     <div class="latest_items">
         <h2>Latest Items</h2>
+
+        <a href="{{ url_for('add_item_page') }}">New</a>
+
         <ul>
             {% for item in latest_items %}
             <li><a href="{{ url_for('item_page',category_name=item.category.name, item_name=item.name) }}">{{ item.name }} ({{ item.category.name }})</a></li>
