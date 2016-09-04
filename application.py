@@ -92,6 +92,8 @@ def add_item_page():
         session.add(new_item)
         session.commit()
 
+        flash("new menu item created!")
+
         return redirect(url_for('item_page', category_name=item_category, item_name=item_name))
 
     else:
@@ -123,6 +125,8 @@ def edit_item_page(category_name, item_name):
         session.add(item)
         session.commit()
 
+        flash("Menu item updated!")
+
         return redirect(url_for('item_page', category_name=item_category, item_name=item_name))
 
     else:
@@ -144,6 +148,8 @@ def delete_item_page(category_name, item_name):
         category_name = item.category.name
         session.delete(item)
         session.commit()
+
+        flash("Menu item deleted.")
 
         return redirect(url_for('category_page', category=category_name))
 
