@@ -149,7 +149,7 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
-    # Create New User:
+    # Create New User if not already exists:
     user = session.query(User).filter_by(email=data['email']).first()
     if user:
         print user.email + " already exists."
@@ -157,7 +157,6 @@ def gconnect():
         new_user = User(name=data['name'], email=data['email'], picture_url=data['picture'])
         session.add(new_user)
         session.commit()
-
 
     output = ''
     output += '<h1>Welcome, '
@@ -281,8 +280,7 @@ def add_item_page():
         item_price = request.form['item_price']
         item_category = request.form['item_category']
 
-        # TODO: Query for user
-        user_obj = session.query(User).filter_by(email="konrad.schieban@gmail.com").one()
+        user_obj = session.query(User).filter_by(email=login_session['email']).one()
         category_obj = session.query(Category).filter_by(name=item_category).one()
 
         new_item = Item(name=item_name,
@@ -307,6 +305,18 @@ def edit_item_page(category_name, item_name):
 
     if 'username' not in login_session:
         return redirect('/login')
+
+    try:
+        category_obj = session.query(Category).filter_by(name=category_name).one()
+        item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
+    except NoResultFound:
+        flash("Invalid URL")
+        return redirect(url_for('catalog_root_page'))
+
+    # if user has not created this item, redirect him
+    if not item.user.email == login_session['email']:
+        flash("Permission denied")
+        return redirect(url_for('catalog_root_page'))
 
     if request.method == 'POST':
 
@@ -334,12 +344,6 @@ def edit_item_page(category_name, item_name):
         return redirect(url_for('item_page', category_name=item_category, item_name=item_name))
 
     else:  # GET
-        try:
-            category_obj = session.query(Category).filter_by(name=category_name).one()
-            item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
-        except NoResultFound:
-            flash("Invalid URL")
-            return redirect(url_for('catalog_root_page'))
 
         categories = session.query(Category).all()
         return render_template('edit_item.html', categories=categories, item=item)
@@ -350,6 +354,18 @@ def delete_item_page(category_name, item_name):
 
     if 'username' not in login_session:
         return redirect('/login')
+
+    try:
+        category_obj = session.query(Category).filter_by(name=category_name).one()
+        item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
+    except NoResultFound:
+        flash("Invalid URL")
+        return redirect(url_for('catalog_root_page'))
+
+    # if user has not created this item, redirect him
+    if not item.user.email == login_session['email']:
+        flash("Permission denied")
+        return redirect(url_for('catalog_root_page'))
 
     if request.method == 'POST':
 
@@ -365,12 +381,6 @@ def delete_item_page(category_name, item_name):
         return redirect(url_for('category_page', category=category_name))
 
     else:  # GET
-        try:
-            category_obj = session.query(Category).filter_by(name=category_name).one()
-            item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
-        except NoResultFound:
-            flash("Invalid URL")
-            return redirect(url_for('catalog_root_page'))
 
         return render_template('delete_item.html', item=item)
 
