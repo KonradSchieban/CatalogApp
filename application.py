@@ -17,7 +17,7 @@ import requests
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Restaurant Menu Application"
+APPLICATION_NAME = "Catalog App"
 
 # Initialize Flask
 app = Flask(__name__)
@@ -149,6 +149,16 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # Create New User:
+    user = session.query(User).filter_by(email=data['email']).first()
+    if user:
+        print user.email + " already exists."
+    else:
+        new_user = User(name=data['name'], email=data['email'], picture_url=data['picture'])
+        session.add(new_user)
+        session.commit()
+
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -168,9 +178,14 @@ def gconnect():
 @app.route('/catalog')
 def catalog_root_page():
 
+    if 'username' not in login_session:
+        return redirect('/login')
+
     categories = session.query(Category).all()
 
     latest_items = session.query(Item).order_by(desc(Item.created_date)).limit(10).all()
+
+    print login_session
 
     return render_template('catalog_root_page.html',
                            categories=categories,
@@ -180,12 +195,18 @@ def catalog_root_page():
 @app.route('/catalog.json')
 def catalog_json():
 
+    if 'username' not in login_session:
+        return redirect('/login')
+
     categories = session.query(Category).all()
     return jsonify(Catalog=[cat.serialize for cat in categories])
 
 
 @app.route('/catalog/<string:category>')
 def category_page(category):
+
+    if 'username' not in login_session:
+        return redirect('/login')
 
     try:
         category_obj = session.query(Category).filter_by(name=category).one()
@@ -206,12 +227,18 @@ def category_page(category):
 @app.route('/catalog/<string:category>.json')
 def category_json(category):
 
+    if 'username' not in login_session:
+        return redirect('/login')
+
     categories = session.query(Category).filter_by(name=category).all()
     return jsonify(Catalog=[cat.serialize for cat in categories])
 
 
 @app.route('/catalog/<string:category_name>/<string:item_name>')
 def item_page(category_name, item_name):
+
+    if 'username' not in login_session:
+        return redirect('/login')
 
     try:
         category_obj = session.query(Category).filter_by(name=category_name).one()
@@ -227,6 +254,9 @@ def item_page(category_name, item_name):
 @app.route('/catalog/<string:category_name>/<string:item_name>.json')
 def item_page_json(category_name, item_name):
 
+    if 'username' not in login_session:
+        return redirect('/login')
+
     try:
         category_obj = session.query(Category).filter_by(name=category_name).one()
     except NoResultFound:
@@ -239,6 +269,9 @@ def item_page_json(category_name, item_name):
 
 @app.route('/catalog/new', methods=['GET', 'POST'])
 def add_item_page():
+
+    if 'username' not in login_session:
+        return redirect('/login')
 
     if request.method == 'POST':
 
@@ -271,6 +304,9 @@ def add_item_page():
 
 @app.route('/catalog/<string:category_name>/<string:item_name>/edit', methods=['GET', 'POST'])
 def edit_item_page(category_name, item_name):
+
+    if 'username' not in login_session:
+        return redirect('/login')
 
     if request.method == 'POST':
 
@@ -312,6 +348,9 @@ def edit_item_page(category_name, item_name):
 @app.route('/catalog/<string:category_name>/<string:item_name>/delete', methods=['GET', 'POST'])
 def delete_item_page(category_name, item_name):
 
+    if 'username' not in login_session:
+        return redirect('/login')
+
     if request.method == 'POST':
 
         item_id = request.form['item_id']
@@ -338,7 +377,7 @@ def delete_item_page(category_name, item_name):
 
 # Create anti-forgery state token
 @app.route('/login')
-def showLogin():
+def show_login():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
