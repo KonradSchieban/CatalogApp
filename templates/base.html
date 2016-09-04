@@ -26,6 +26,9 @@
                     <a class="nav-link" href="/">Categories</span></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('add_item_page') }}">New Item</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
                 <li class="nav-item">
@@ -36,6 +39,22 @@
 
         {% block content %}
         {% endblock %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flash">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li><strong> {{ message }} </strong></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
 
         <div class="row footer-separator">
             <div class="col-md-12 col-sm-12">
