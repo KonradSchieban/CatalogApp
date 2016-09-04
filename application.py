@@ -57,6 +57,7 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['credentials']
+    print url
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '

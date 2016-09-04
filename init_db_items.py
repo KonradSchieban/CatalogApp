@@ -26,7 +26,7 @@ Item.__table__.drop(engine, checkfirst=True)
 Base.metadata.create_all(engine)
 
 # Create Items
-user1 = User(name="Konrad Schieban", email="konrad.schieban@gmail.com")
+user1 = User(name="Konrad Schieban", email="konrad.schieban@g.com")
 session.add(user1)
 session.commit()
 

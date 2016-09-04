@@ -1,0 +1,25 @@
+body {
+    font-family: sans-serif;
+    padding: 10px;
+    display: block;
+    font-family: "Lato", sans-serif;
+    background-color: ghostwhite;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+hr {
+    margin: 20px auto;
+    margin-top: 0px;
+}
+
+.flash {
+    color: red;
+ }

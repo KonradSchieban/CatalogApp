@@ -1,35 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h1>Catalog App</h1>
-
-    <div class="categories">
-        <h2>Categories</h2>
-        <ul>
-            {% for category in categories %}
-            <li><a href="{{ url_for('category_page', category=category.name) }}">{{ category.name }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="category_items">
-        <h2>{{ category_name }} Items</h2>
-        <ul>
-            {% for item in category_items %}
-            <li><a href="{{ url_for('item_page', category_name=item.category.name, item_name=item.name) }}">{{ item.name }}</a></li>
-            {% endfor %}
-        </ul>
-
-        <div class = 'flash'>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                {% for message in messages %}
-                    <li> <strong> {{ message }} </strong> </li>
+<div class="row">
+    <div class="col-md-4">
+        <div class="categories">
+            <h2>Categories</h2>
+            <ul>
+                {% for category in categories %}
+                <li><a href="{{ url_for('category_page', category=category.name) }}">{{ category.name }}</a></li>
                 {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+            </ul>
         </div>
-
     </div>
+    <div class="col-md-8">
+        <div class="category_items">
+            <h2>{{ category_name }} Items</h2>
+            <ul>
+                {% for item in category_items %}
+                <li><a href="{{ url_for('item_page', category_name=item.category.name, item_name=item.name) }}">{{ item.name }}</a></li>
+                {% endfor %}
+            </ul>
+
+            <div class = 'flash'>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                    {% for message in messages %}
+                        <li> <strong> {{ message }} </strong> </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

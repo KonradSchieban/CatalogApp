@@ -1,14 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,100">
+    <link rel="stylesheet" href="/static/css_bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css_main.css">
     <script type="text/javascript" src="{{ url_for('static', filename='js_tools') }}"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//apis.google.com/js/platform.js?onload=start"> </script>
 </head>
 <body>
+    <div class="container">
+        <header class="row">
+            <div class="col-md-12">
+                <a href="/"><h1>Catalog App</h1></a>
+            </div>
+        </header>
 
-    {% block content %}
-    {% endblock %}
+        <nav class="navbar navbar-light bg-faded">
+            <ul class="nav navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Categories</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/gdisconnect">Logout</a>
+                </li>
+            </ul>
+        </nav>
 
+        {% block content %}
+        {% endblock %}
+
+        <div class="row footer-separator">
+            <div class="col-md-12 col-sm-12">
+                <hr>
+            </div>
+        </div>
+
+        <footer class="row">
+            <div class="col-md-4 col-sm-4 footer_left text-left">
+                <p>Udacity - Full Stack Web Developer</p>
+            </div>
+            <div class="col-md-4 col-sm-4 footer_middle text-center">
+                <p>Catalog App</p>
+            </div>
+            <div class="col-md-4 col-sm-4 footer_right text-right">
+                <p>Created: 09/2016</p>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>
