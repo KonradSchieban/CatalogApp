@@ -66,12 +66,6 @@ class Category(Base):
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
-        print {
-            'id': self.id,
-            'name': self.name,
-            'items': items_json(self.id)
-        }
-
         return {
             'id': self.id,
             'name': self.name,
@@ -125,7 +119,6 @@ class Item(Base):
 
 
 def items_json(cat_id):
-    print "here"
     items = session.query(Item).filter_by(category_id=cat_id).all()
     return [item.serialize for item in items]
 

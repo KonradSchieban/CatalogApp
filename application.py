@@ -46,7 +46,6 @@ def catalog_root_page():
                            latest_items=latest_items)
 
 
-#JSON APIs to view Restaurant Information
 @app.route('/catalog.json')
 def catalog_json():
 
@@ -73,7 +72,14 @@ def category_page(category):
                            category_items=category_items)
 
 
-@app.route('/catalog/<string:category_name>/<string:item_name>/')
+@app.route('/catalog/<string:category>.json')
+def category_json(category):
+
+    categories = session.query(Category).filter_by(name=category).all()
+    return jsonify(Catalog=[cat.serialize for cat in categories])
+
+
+@app.route('/catalog/<string:category_name>/<string:item_name>')
 def item_page(category_name, item_name):
 
     try:
@@ -85,6 +91,19 @@ def item_page(category_name, item_name):
     item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
 
     return render_template('item.html', item=item)
+
+
+@app.route('/catalog/<string:category_name>/<string:item_name>.json')
+def item_page_json(category_name, item_name):
+
+    try:
+        category_obj = session.query(Category).filter_by(name=category_name).one()
+    except NoResultFound:
+        return jsonify(Item=[])
+
+    item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
+
+    return jsonify(Item=[item.serialize])
 
 
 @app.route('/catalog/new', methods=['GET', 'POST'])
