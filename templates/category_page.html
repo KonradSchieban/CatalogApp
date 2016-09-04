@@ -12,15 +12,15 @@
         <h2>Categories</h2>
         <ul>
             {% for category in categories %}
-            <li><a>{{ category.name }}</a></li>
+            <li><a href="{{ url_for('category_page', category=category.name) }}">{{ category.name }}</a></li>
             {% endfor %}
         </ul>
     </div>
-    <div class="latest_items">
+    <div class="category_items">
         <h2>{{ category_name }} Items</h2>
         <ul>
             {% for item in category_items %}
-            <li><a>{{ item.name }}</a></li>
+            <li><a href="{{ url_for('item_page', category_name=item.category.name, item_name=item.name) }}">{{ item.name }}</a></li>
             {% endfor %}
         </ul>
     </div>
