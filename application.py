@@ -185,6 +185,7 @@ def catalog_root_page():
     print login_session
 
     return render_template('catalog_root_page.html',
+                           title="Catalog App",
                            categories=categories,
                            latest_items=latest_items)
 
@@ -216,6 +217,7 @@ def category_page(category):
     categories = session.query(Category).all()
 
     return render_template('category_page.html',
+                           title="Categories",
                            category_name=category,
                            categories=categories,
                            category_items=category_items)
@@ -245,7 +247,10 @@ def item_page(category_name, item_name):
 
     item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
 
-    return render_template('item.html', item=item, current_user_email=login_session['email'])
+    return render_template('item.html',
+                           title="Item",
+                           item=item,
+                           current_user_email=login_session['email'])
 
 
 @app.route('/catalog/<string:category_name>/<string:item_name>.json')
@@ -295,7 +300,9 @@ def add_item_page():
 
     else:
         categories = session.query(Category).all()
-        return render_template('add_item.html', categories=categories)
+        return render_template('add_item.html',
+                               title="Add Item",
+                               categories=categories)
 
 
 @app.route('/catalog/<string:category_name>/<string:item_name>/edit', methods=['GET', 'POST'])
@@ -339,12 +346,18 @@ def edit_item_page(category_name, item_name):
 
         flash("Menu item updated!")
 
-        return redirect(url_for('item_page', category_name=item_category, item_name=item_name))
+        return redirect(url_for('item_page',
+                                title="Item",
+                                category_name=item_category,
+                                item_name=item_name))
 
     else:  # GET
 
         categories = session.query(Category).all()
-        return render_template('edit_item.html', categories=categories, item=item)
+        return render_template('edit_item.html',
+                               title="Edit Item",
+                               categories=categories,
+                               item=item)
 
 
 @app.route('/catalog/<string:category_name>/<string:item_name>/delete', methods=['GET', 'POST'])
@@ -376,11 +389,15 @@ def delete_item_page(category_name, item_name):
 
         flash("Menu item deleted.")
 
-        return redirect(url_for('category_page', category=category_name))
+        return redirect(url_for('category_page',
+                                title="Categories",
+                                category=category_name))
 
     else:  # GET
 
-        return render_template('delete_item.html', item=item)
+        return render_template('delete_item.html',
+                               title="Delete Item",
+                               item=item)
 
 
 # Create anti-forgery state token
