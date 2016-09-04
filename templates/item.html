@@ -12,6 +12,7 @@
     <p>{{ item.description }}</p>
     <a href="{{ url_for('edit_item_page', category_name=item.category.name, item_name=item.name) }}">Edit</a>
     <a href="{{ url_for('delete_item_page', category_name=item.category.name, item_name=item.name) }}">Delete</a>
+    <a href="{{ url_for('category_page', category=item.category.name) }}">Back to {{ item.category.name }} items</a>
 
     <div class = 'flash'>
     {% with messages = get_flashed_messages() %}
