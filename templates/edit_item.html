@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog App</title>
+</head>
+<body>
+
+    <h1>Catalog App</h1>
+
+    <h2>Edit Item</h2>
+
+    <form method="post">
+
+        <h4>Name</h4>
+        <input style="min-width: 200px;" type="text" name="item_name" value="{{ item.name }}">
+
+        <h4>Description</h4>
+        <input style="min-width: 200px;" type="text" name="item_description" value="{{ item.description }}">
+
+        <h4>Price</h4>
+        <input style="min-width: 200px;" type="text" name="item_price" value="{{ item.price }}">
+
+        <h4>Category</h4>
+        <select name="item_category">
+            {% for category in categories %}
+                {% if category.name == item.category.name %}
+                <option value="{{ category.name }}" selected="selected">{{ category.name }}</option>
+                {% else %}
+                <option value="{{ category.name }}">{{ category.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+
+        <input type="hidden" name="item_id" value="{{ item.id }}">
+
+        <br>
+
+        <button class="btn" type="submit">Edit</button>
+
+    </form>
+
+</body>
+</html>
