@@ -171,8 +171,6 @@ def gconnect():
     return output
 
 
-
-
 @app.route('/')
 @app.route('/catalog')
 def catalog_root_page():
@@ -247,7 +245,7 @@ def item_page(category_name, item_name):
 
     item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
 
-    return render_template('item.html', item=item)
+    return render_template('item.html', item=item, current_user_email=login_session['email'])
 
 
 @app.route('/catalog/<string:category_name>/<string:item_name>.json')
