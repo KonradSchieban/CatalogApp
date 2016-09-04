@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog App</title>
+</head>
+<body>
+
+    <h1>Catalog App</h1>
+
+    <h2>Add New Item</h2>
+
+    <form method="post">
+
+        <h4>Name</h4>
+        <input style="min-width: 200px;" type="text" name="item_name" value="">
+
+        <h4>Description</h4>
+        <input style="min-width: 200px;" type="text" name="item_description" value="">
+
+        <h4>Price</h4>
+        <input style="min-width: 200px;" type="text" name="item_price" value="">
+
+        <h4>Category</h4>
+        <select name="item_category">
+            {% for category in categories %}
+            <option value="{{ category.name }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <br>
+
+        <button class="btn" type="submit">Create</button>
+
+    </form>
+
+</body>
+</html>
