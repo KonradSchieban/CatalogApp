@@ -1,4 +1,3 @@
-import cgi
 import jinja2
 import os
 from sqlalchemy import create_engine, desc
@@ -45,6 +44,14 @@ def catalog_root_page():
     return render_template('catalog_root_page.html',
                            categories=categories,
                            latest_items=latest_items)
+
+
+#JSON APIs to view Restaurant Information
+@app.route('/catalog.json')
+def catalog_json():
+
+    categories = session.query(Category).all()
+    return jsonify(Catalog=[cat.serialize for cat in categories])
 
 
 @app.route('/catalog/<string:category>')

@@ -2,10 +2,29 @@ from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from flask import jsonify
 import datetime
 
 
 Base = declarative_base()
+
+
+# SETUP DATABASE
+engine = create_engine('sqlite:///catalogApp.db')
+# Bind the engine to the metadata of the Base class so that the
+# declaratives can be accessed through a DBSession instance
+Base.metadata.bind = engine
+
+DBSession = sessionmaker(bind=engine)
+# A DBSession() instance establishes all conversations with the database
+# and represents a "staging zone" for all the objects loaded into the
+# database session object. Any change made against the objects in the
+# session won't be persisted into the database until you call
+# session.commit(). If you're not happy about the changes, you can
+# revert all of them back to the last commit by calling
+# session.rollback()
+session = DBSession()
 
 
 class Restaurant(Base):
@@ -44,6 +63,21 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False, unique=True)
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        print {
+            'id': self.id,
+            'name': self.name,
+            'items': items_json(self.id)
+        }
+
+        return {
+            'id': self.id,
+            'name': self.name,
+            'items': items_json(self.id)
+        }
+
 
 class User(Base):
     __tablename__ = 'User'
@@ -51,6 +85,15 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False, unique=True)
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email
+        }
 
 
 class Item(Base):
@@ -68,7 +111,22 @@ class Item(Base):
     user = relationship(User)
     user_id = Column(Integer, ForeignKey('User.id'))
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'price': self.price,
+            'created_date': self.created_date,
+            'user_id': self.user_id
+        }
 
-engine = create_engine('sqlite:///catalogApp.db')
+
+def items_json(cat_id):
+    print "here"
+    items = session.query(Item).filter_by(category_id=cat_id).all()
+    return [item.serialize for item in items]
 
 Base.metadata.create_all(engine)
