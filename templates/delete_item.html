@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Catalog App</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='js_tools') }}"></script>
 </head>
 <body>
 
@@ -15,6 +16,9 @@
         <input type="hidden" name="category_id" value="{{ item.category.id }}">
         <input type="hidden" name="item_id" value="{{ item.id }}">
         <button class="btn" type="submit">Confirm</button>
+    </form>
+
+    <form>
         <button class="btn" onclick="goBack()">Cancel</button>
     </form>
 
