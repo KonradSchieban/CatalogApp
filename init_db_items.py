@@ -57,3 +57,5 @@ for j in i:
     print j.category_id
     print j.user_id
     print j.created_date
+    print "name:  " + j.category.name
+
