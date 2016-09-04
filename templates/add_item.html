@@ -3,6 +3,7 @@
 
     <h2>Add New Item</h2>
 
+    <div class="btn-group form-group">
     <form method="post">
 
         <h4>Name</h4>
@@ -21,13 +22,19 @@
             {% endfor %}
         </select>
 
-        <br>
+        <br><br>
 
-        <button class="btn" type="submit">Create</button>
+        <div class="btn">
+            <button class="btn" type="submit">Create</button>
+        </div>
+        <div class="btn">
+            <button class="btn" onclick="goBack()">Cancel</button>
+        </div>
     </form>
 
     <form>
-        <button class="btn" onclick="goBack()">Cancel</button>
+
     </form>
+    </div>
 
 {% endblock %}

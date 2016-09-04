@@ -22,4 +22,9 @@ hr {
 
 .flash {
     color: red;
- }
+}
+
+.flash li{
+    list-style-type: none;
+}
+

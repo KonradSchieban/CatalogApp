@@ -10,16 +10,4 @@
     {% endif %}
     <a href="{{ url_for('category_page', category=item.category.name) }}">Back to {{ item.category.name }} items</a>
 
-    <div class = 'flash'>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li> <strong> {{ message }} </strong> </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
-    </div>
-
 {% endblock %}

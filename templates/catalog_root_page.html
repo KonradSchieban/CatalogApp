@@ -16,8 +16,6 @@
         <div class="latest_items">
             <h2>Latest Items</h2>
 
-            <a href="{{ url_for('add_item_page') }}">New</a>
-
             <ul>
                 {% for item in latest_items %}
                 <li><a href="{{ url_for('item_page',category_name=item.category.name, item_name=item.name) }}">{{ item.name }}
@@ -28,19 +26,4 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class='flash'>
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li><strong> {{ message }} </strong></li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-        </div>
-    </div>
-</div>
 {% endblock %}
