@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Catalog App</title>
-    <script type="text/javascript" src="{{ url_for('static', filename='js_tools') }}"></script>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
 
     <h1>Catalog App</h1>
 
@@ -38,5 +32,4 @@
         <button class="btn" onclick="goBack()">Cancel</button>
     </form>
 
-</body>
-</html>
+{% endblock %}

@@ -1,43 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Catalog App</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
 
-    <h1>Catalog App</h1>
+<h1>Catalog App</h1>
 
-    <div class="categories">
-        <h2>Categories</h2>
-        <ul>
-            {% for category in categories %}
-            <li><a href="{{ url_for('category_page', category=category.name) }}">{{ category.name }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="latest_items">
-        <h2>Latest Items</h2>
+<div class="categories">
+    <h2>Categories</h2>
+    <ul>
+        {% for category in categories %}
+        <li><a href="{{ url_for('category_page', category=category.name) }}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="latest_items">
+    <h2>Latest Items</h2>
 
-        <a href="{{ url_for('add_item_page') }}">New</a>
+    <a href="{{ url_for('add_item_page') }}">New</a>
 
-        <ul>
-            {% for item in latest_items %}
-            <li><a href="{{ url_for('item_page',category_name=item.category.name, item_name=item.name) }}">{{ item.name }} ({{ item.category.name }})</a></li>
-            {% endfor %}
-        </ul>
-    </div>
+    <ul>
+        {% for item in latest_items %}
+        <li><a href="{{ url_for('item_page',category_name=item.category.name, item_name=item.name) }}">{{ item.name }}
+            ({{ item.category.name }})</a></li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class = 'flash'>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                {% for message in messages %}
-                    <li> <strong> {{ message }} </strong> </li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-    </div>
-</body>
-</html>
+<div class='flash'>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li><strong> {{ message }} </strong></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}
