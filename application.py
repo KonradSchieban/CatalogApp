@@ -3,6 +3,7 @@ import jinja2
 import os
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 
 from database_setup import Base, Category, Item, User
@@ -49,7 +50,12 @@ def catalog_root_page():
 @app.route('/catalog/<string:category>')
 def category_page(category):
 
-    category_obj = session.query(Category).filter_by(name=category).one()
+    try:
+        category_obj = session.query(Category).filter_by(name=category).one()
+    except NoResultFound:
+        flash("Invalid URL")
+        return redirect(url_for('catalog_root_page'))
+
     category_items = session.query(Item).filter_by(category_id=category_obj.id).all()
 
     categories = session.query(Category).all()
@@ -63,7 +69,12 @@ def category_page(category):
 @app.route('/catalog/<string:category_name>/<string:item_name>/')
 def item_page(category_name, item_name):
 
-    category_obj = session.query(Category).filter_by(name=category_name).one()
+    try:
+        category_obj = session.query(Category).filter_by(name=category_name).one()
+    except NoResultFound:
+        flash("Invalid URL")
+        return redirect(url_for('catalog_root_page'))
+
     item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
 
     return render_template('item.html', item=item)
@@ -129,9 +140,13 @@ def edit_item_page(category_name, item_name):
 
         return redirect(url_for('item_page', category_name=item_category, item_name=item_name))
 
-    else:
-        category_obj = session.query(Category).filter_by(name=category_name).one()
-        item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
+    else:  # GET
+        try:
+            category_obj = session.query(Category).filter_by(name=category_name).one()
+            item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
+        except NoResultFound:
+            flash("Invalid URL")
+            return redirect(url_for('catalog_root_page'))
 
         categories = session.query(Category).all()
         return render_template('edit_item.html', categories=categories, item=item)
@@ -153,9 +168,13 @@ def delete_item_page(category_name, item_name):
 
         return redirect(url_for('category_page', category=category_name))
 
-    else:
-        category_obj = session.query(Category).filter_by(name=category_name).one()
-        item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
+    else:  # GET
+        try:
+            category_obj = session.query(Category).filter_by(name=category_name).one()
+            item = session.query(Item).filter_by(name=item_name, category_id=category_obj.id).one()
+        except NoResultFound:
+            flash("Invalid URL")
+            return redirect(url_for('catalog_root_page'))
 
         return render_template('delete_item.html', item=item)
 
