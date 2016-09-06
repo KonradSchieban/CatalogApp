@@ -2,12 +2,21 @@
 {% block content %}
 
     <h2>{{ item.name }}</h2>
-    <p>{{ item.description }}</p>
+    <div class="row item-description">
+        <div class="col-md-12 col-sm-12">
+            <pre>{{ item.description }}</pre>
+        </div>
+    </div>
 
     {% if item.user.email == current_user_email %}
-    <a href="{{ url_for('edit_item_page', category_name=item.category.name, item_name=item.name) }}">Edit</a>
-    <a href="{{ url_for('delete_item_page', category_name=item.category.name, item_name=item.name) }}">Delete</a>
+    <div class="item-link">
+        <a href="{{ url_for('edit_item_page', category_name=item.category.name, item_name=item.name) }}">Edit</a>
+    </div>
+    <div class="item-link">
+        <a href="{{ url_for('delete_item_page', category_name=item.category.name, item_name=item.name) }}">Delete</a>
     {% endif %}
-    <a href="{{ url_for('category_page', category=item.category.name) }}">Back to {{ item.category.name }} items</a>
-
+    </div>
+    <div class="item-link">
+        <a href="{{ url_for('category_page', category=item.category.name) }}">Back to {{ item.category.name }} items</a>
+    </div>
 {% endblock %}
