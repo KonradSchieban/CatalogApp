@@ -15,7 +15,7 @@
 <body>
     <div class="container">
         <header class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 <a href="/"><h1>Catalog App</h1></a>
             </div>
         </header>
@@ -25,15 +25,18 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Categories</span></a>
                 </li>
+                {% if is_logged_in %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('add_item_page') }}">New Item</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/gdisconnect">Logout</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -41,7 +44,7 @@
         {% endblock %}
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 <div class="flash">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
