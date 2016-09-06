@@ -68,14 +68,11 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['picture']
-        response = make_response(json.dumps('Successfully disconnected.'), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-    else:
 
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
-        response.headers['Content-Type'] = 'application/json'
-        return response
+        flash("Successfully logged out.")
+    else:
+        flash("Failed to revoke token for given user.")
+    return redirect('/')
 
 
 @app.route('/gconnect', methods=['POST'])
@@ -176,8 +173,9 @@ def gconnect():
 @app.route('/catalog')
 def catalog_root_page():
 
-    if 'username' not in login_session:
-        return redirect('/login')
+    is_logged_in = None
+    if 'username' in login_session:
+        is_logged_in = True
 
     categories = session.query(Category).all()
 
@@ -187,15 +185,13 @@ def catalog_root_page():
 
     return render_template('catalog_root_page.html',
                            title="Catalog App",
+                           is_logged_in=is_logged_in,
                            categories=categories,
                            latest_items=latest_items)
 
 
 @app.route('/catalog.json')
 def catalog_json():
-
-    if 'username' not in login_session:
-        return redirect('/login')
 
     categories = session.query(Category).all()
     return jsonify(Catalog=[cat.serialize for cat in categories])
@@ -204,8 +200,9 @@ def catalog_json():
 @app.route('/catalog/<string:category>')
 def category_page(category):
 
-    if 'username' not in login_session:
-        return redirect('/login')
+    is_logged_in = None
+    if 'username' in login_session:
+        is_logged_in = True
 
     try:
         category_obj = session.query(Category).filter_by(name=category).one()
@@ -219,6 +216,7 @@ def category_page(category):
 
     return render_template('category_page.html',
                            title="Categories",
+                           is_logged_in=is_logged_in,
                            category_name=category,
                            categories=categories,
                            category_items=category_items)
@@ -227,9 +225,6 @@ def category_page(category):
 @app.route('/catalog/<string:category>.json')
 def category_json(category):
 
-    if 'username' not in login_session:
-        return redirect('/login')
-
     categories = session.query(Category).filter_by(name=category).all()
     return jsonify(Catalog=[cat.serialize for cat in categories])
 
@@ -237,8 +232,12 @@ def category_json(category):
 @app.route('/catalog/<string:category_name>/<string:item_name>')
 def item_page(category_name, item_name):
 
-    if 'username' not in login_session:
-        return redirect('/login')
+    if 'email' in login_session:
+        is_logged_in = True
+        current_user_email = login_session['email']
+    else:
+        is_logged_in = None
+        current_user_email = None
 
     try:
         category_obj = session.query(Category).filter_by(name=category_name).one()
@@ -250,15 +249,14 @@ def item_page(category_name, item_name):
 
     return render_template('item.html',
                            title="Item",
+                           is_logged_in=is_logged_in,
                            item=item,
-                           current_user_email=login_session['email'])
+                           current_user_email=current_user_email
+                           )
 
 
 @app.route('/catalog/<string:category_name>/<string:item_name>.json')
 def item_page_json(category_name, item_name):
-
-    if 'username' not in login_session:
-        return redirect('/login')
 
     try:
         category_obj = session.query(Category).filter_by(name=category_name).one()
@@ -274,12 +272,23 @@ def item_page_json(category_name, item_name):
 def add_item_page():
 
     if 'username' not in login_session:
-        return redirect('/login')
+        flash("User needs to login before authorized to create an item")
+        return redirect('/')
 
     if request.method == 'POST':
 
         # Get all request parameter
         item_name = request.form['item_name']
+
+        # Check name for invalid characters because it is part of the item URL
+        invalid_chars = set(string.punctuation.replace("_", ""))
+        if any(char in invalid_chars for char in item_name):
+            flash("Name may not contain special characters")
+            return redirect(url_for('add_item_page'))
+        elif not item_name:
+            flash("Name may not be empty")
+            return redirect(url_for('add_item_page'))
+
         item_description = request.form['item_description']
         item_price = request.form['item_price']
         item_category = request.form['item_category']
@@ -302,6 +311,7 @@ def add_item_page():
     else:
         categories = session.query(Category).all()
         return render_template('add_item.html',
+                               is_logged_in=True,
                                title="Add Item",
                                categories=categories)
 
@@ -310,7 +320,8 @@ def add_item_page():
 def edit_item_page(category_name, item_name):
 
     if 'username' not in login_session:
-        return redirect('/login')
+        flash("User needs to login before authorized to create an item")
+        return redirect('/')
 
     try:
         category_obj = session.query(Category).filter_by(name=category_name).one()
@@ -328,6 +339,16 @@ def edit_item_page(category_name, item_name):
 
         # Get all request parameter
         item_name = request.form['item_name']
+
+        # Check name for invalid characters because it is part of the item URL
+        invalid_chars = set(string.punctuation.replace("_", ""))
+        if any(char in invalid_chars for char in item_name):
+            flash("Name may not contain special characters")
+            return redirect(url_for('add_item_page'))
+        elif not item_name:
+            flash("Name may not be empty")
+            return redirect(url_for('add_item_page'))
+
         item_description = request.form['item_description']
         item_price = request.form['item_price']
         item_category = request.form['item_category']
@@ -348,6 +369,7 @@ def edit_item_page(category_name, item_name):
         flash("Menu item updated!")
 
         return redirect(url_for('item_page',
+                                is_logged_in=True,
                                 title="Item",
                                 category_name=item_category,
                                 item_name=item_name))
@@ -365,7 +387,8 @@ def edit_item_page(category_name, item_name):
 def delete_item_page(category_name, item_name):
 
     if 'username' not in login_session:
-        return redirect('/login')
+        flash("User needs to login before authorized to delete an item")
+        return redirect('/')
 
     try:
         category_obj = session.query(Category).filter_by(name=category_name).one()
@@ -397,6 +420,7 @@ def delete_item_page(category_name, item_name):
     else:  # GET
 
         return render_template('delete_item.html',
+                               is_logged_in=True,
                                title="Delete Item",
                                item=item)
 
