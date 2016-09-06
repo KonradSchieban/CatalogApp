@@ -6,6 +6,10 @@ body {
     background-color: ghostwhite;
 }
 
+header a{
+    text-decoration: none;
+}
+
 h3 {
     font-size: 16px;
 }
@@ -28,3 +32,16 @@ hr {
     list-style-type: none;
 }
 
+.item-link {
+    min-width: 60px;
+    float:left;
+}
+
+.item-description {
+    font-size: 14px;
+    margin: 0;
+}
+
+.item-price {
+    margin-top: 30px;
+}
