@@ -1,19 +1,19 @@
-import jinja2
-import os
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
-from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, make_response
 from flask import session as login_session
-from database_setup import Base, Category, Item, User
-import random
-import string
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
+import jinja2
 import httplib2
 import json
-from flask import make_response
 import requests
+import os
+import random
+import string
+
+from database_setup import Base, Category, Item, User
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -47,7 +47,12 @@ session = DBSession()
 @app.route('/gdisconnect')
 def gdisconnect():
 
-    access_token = login_session['credentials']
+    try:
+        access_token = login_session['credentials']
+    except KeyError:
+        flash("Failed to get access token")
+        return redirect('/')
+
     print 'In gdisconnect access token is %s', access_token
     print 'User name is: '
     print login_session['username']
@@ -62,16 +67,15 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     print 'result is '
     print result
-    if result['status'] == '200':
-        del login_session['credentials']
-        del login_session['gplus_id']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
 
-        flash("Successfully logged out.")
-    else:
-        flash("Failed to revoke token for given user.")
+    del login_session['credentials']
+    del login_session['gplus_id']
+    del login_session['username']
+    del login_session['email']
+    del login_session['picture']
+
+    flash("Successfully logged out.")
+
     return redirect('/')
 
 
@@ -251,8 +255,7 @@ def item_page(category_name, item_name):
                            title="Item",
                            is_logged_in=is_logged_in,
                            item=item,
-                           current_user_email=current_user_email
-                           )
+                           current_user_email=current_user_email)
 
 
 @app.route('/catalog/<string:category_name>/<string:item_name>.json')
