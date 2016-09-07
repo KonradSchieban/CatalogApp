@@ -30,27 +30,30 @@ only by the user who created the item
         |-- login.html
 
 <h2>2. Prerequisites</h2>
-_Catalog App_ uses the application server framework _Flask_ and the ORM framework _sqlacademy_.
-Information on how Flask can be installed can be found here: 
+_Catalog App_ uses the application server framework _Flask_ and the ORM framework _SQLAlchemy_.
+Information on how Flask and SQLAlchemy can be installed can be found here: 
  - Flask: http://flask.pocoo.org/docs/0.11/installation/
  - SQLAlchemy: http://docs.sqlalchemy.org/en/latest/intro.html
 
 <h2>3. Locally deploy the server</h2>
-To create the http listeners and deploy the content on the local machine, open a terminal, navigate to the folder <i>Blog</i> and run
+To create the http listeners and deploy the content on the local machine, open a terminal, navigate to the folder <i>CatalogApp</i> and run
 
-    > python <path/to/google_app_engine>/dev_appserver.py .
+    > python application.py .
 
-<h2>4. Blog Features</h2>
+When running the application for the first time no categories and items are in place because the local database is empty.
+Test data can be deployed by running the Python script
 
-<b>4.1. Signup as a new user:</b>
-    New users have to signup on https://blogks1.appspot.com/blog/signup. Users who are currently not logged in and try to access the blog
-    are automatically redirected to the signup page.
-    Valid usernames are between 3 and 20 characters and may only contain alphabetical characters as well as a dash (-) and underscore (_).
-    Valid passwords may contain all characters and are between 3 and 20 characters long.
-    Note, that the email address is an optional input on the signup page.
+    > python init_db_data.py
 
-<b>4.2. Login:</b>
-    Users log in at the URL https://blogks1.appspot.com/blog/login. After successful login, a secure authentication cookie is created.
+<h2>4. Features</h2>
+
+<b>4.1. Signup with your Google+ account:</b>
+    Users can login to the app by authenticating with their Google+ account.
+    Click on the button _Login_ in the Navigation bar to get to the page http://localhost:5000/login to login.
+
+<b>4.2. Categories</b>
+    Items in the catalog are grouped by different categories.
+    Categories can be sen on the left side on http://localhost:5000/ or http://localhost:5000/categories
 
 <b>4.3. Logout:</b>
     Users log out at the URL https://blogks1.appspot.com/blog/logout. After logging out, the authentication cookie is cleared.
