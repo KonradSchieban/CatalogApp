@@ -5,12 +5,12 @@ Version 1.0
 URL: https://localhost:5000/
 
 _Catalog App_ is a web application which shows a catalog with items of a specific category, their description and price.
-Items can be seen by every user but only user who have logged in with their Google+ account can create new items. Items can be edited or deleted
-only by the user who created the item
+Items can be seen by every user but only users who have logged in with their Google+ account can create new items. Items can be edited or deleted
+only by the user who has created the item.
 
 <h2>1. Content</h2>
 
-    - Blog
+    - CatalogItem
     |-- application.py
     |-- cliet_secrets.json
     |-- database_setup.py
@@ -47,26 +47,26 @@ Test data can be deployed by running the Python script
 
 <h2>4. Features</h2>
 
-<b>4.1. Signup with your Google+ account:</b>
+<b>4.1. Signup with your Google+ account: </b>
     Users can login to the app by authenticating with their Google+ account.
     Click on the button _Login_ in the Navigation bar to get to the page http://localhost:5000/login to login.
 
-<b>4.2. Categories</b>
+<b>4.2. Categories: </b>
     Items in the catalog are grouped by different categories.
     Categories can be seen on the left side on http://localhost:5000/ or http://localhost:5000/catalog
 
-<b>4.3. Items</b>
+<b>4.3. Items: </b>
     Items of a specific category can be seen by clicking on a category. Each shown item offers a link to the description pae of the item. 
 
-<b>4.4. New Item</b>
+<b>4.4. New Item: </b>
     Users who are logged in find the button _New Item_ in the Navigation bar.
-    On the page that the user is directed after clicking on that button he can create a new item.
+    Users have to specify a name, description (optional) and price (optional) for a new item.
     Since the URL link to each item contains the item name no special characters are permitted.
 
-<b>4.5. Edit/Delete:</b>
+<b>4.5. Edit/Delete: </b>
     The user who created a specific item has the option to delete and edit an item by navigating to the description page of the item and clicking on _edit_ or _delete_.
     
-<b>4.6 REST API:</b>
+<b>4.6 REST API: </b>
     The app offers Read-Only endpoints to the user where catalog data can be read in JSON format.
     The following end-points can be accessed by the user:
     
