@@ -69,6 +69,7 @@ Test data can be deployed by running the Python script
 <b>4.6 REST API:</b>
     The app offers Read-Only endpoints to the user where catalog data can be read in JSON format.
     The following end-points can be accessed by the user:
+    
      - http://localhost:5000/catalog.json
         -> Returns information about all items in the catalog
      - http://localhost:5000/catalog/<Category>.json
