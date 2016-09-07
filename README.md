@@ -66,7 +66,15 @@ Test data can be deployed by running the Python script
 <b>4.5. Edit/Delete:</b>
     The user who created a specific item has the option to delete and edit an item by navigating to the description page of the item and clicking on _edit_ or _delete_.
     
-
+<b>4.6 REST API:</b>
+    The app offers Read-Only endpoints to the user where catalog data can be read in JSON format.
+    The following end-points can be accessed by the user:
+     - http://localhost:5000/catalog.json
+        -> Returns information about all items in the catalog
+     - http://localhost:5000/catalog/<Category>.json
+        -> Returns information about all items in the specified category
+     - http://localhost:5000/catalog/<Category>/<Item>.json
+        -> Returns only information about the specified item in the specified Category
 
 
 
