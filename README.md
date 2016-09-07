@@ -10,7 +10,7 @@ only by the user who has created the item.
 
 <h2>1. Content</h2>
 
-    - CatalogItem
+    - CatalogApp
     |-- application.py
     |-- cliet_secrets.json
     |-- database_setup.py
