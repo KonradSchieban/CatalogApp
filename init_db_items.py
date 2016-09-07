@@ -26,7 +26,7 @@ Item.__table__.drop(engine, checkfirst=True)
 Base.metadata.create_all(engine)
 
 # Create Items
-user1 = User(name="Konrad Schieban", email="konrad.schieban@g.com")
+user1 = User(name="Konrad Schieban", email="konrad.schieban@gmail.com")
 session.add(user1)
 session.commit()
 
@@ -37,6 +37,10 @@ session.commit()
 
 cat2 = Category(name="Basketball")
 session.add(cat2)
+session.commit()
+
+cat3 = Category(name="Golf")
+session.add(cat3)
 session.commit()
 
 item1 = Item(name="Ball", user=user1, category=cat1, description="Some description here...", price="$99.99")
@@ -51,11 +55,6 @@ item3 = Item(name="Ball", user=user1, category=cat2, description="Some descripti
 session.add(item3)
 session.commit()
 
-i = session.query(Item).filter_by(name="Ball")
-for j in i:
-    print j.name
-    print j.category_id
-    print j.user_id
-    print j.created_date
-    print "name:  " + j.category.name
-
+item4 = Item(name="Clubs", user=user1, category=cat3, description="Some description here...", price="$999.99")
+session.add(item4)
+session.commit()
