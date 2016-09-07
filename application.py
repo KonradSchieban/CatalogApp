@@ -340,7 +340,7 @@ def edit_item_page(category_name, item_name):
 
     if request.method == 'POST':
 
-        # Get all request parameter
+        # Get all request parameters
         item_name = request.form['item_name']
 
         # Check name for invalid characters because it is part of the item URL
@@ -381,6 +381,7 @@ def edit_item_page(category_name, item_name):
 
         categories = session.query(Category).all()
         return render_template('edit_item.html',
+                               is_logged_in=True,
                                title="Edit Item",
                                categories=categories,
                                item=item)
