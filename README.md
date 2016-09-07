@@ -53,20 +53,21 @@ Test data can be deployed by running the Python script
 
 <b>4.2. Categories</b>
     Items in the catalog are grouped by different categories.
-    Categories can be sen on the left side on http://localhost:5000/ or http://localhost:5000/categories
+    Categories can be seen on the left side on http://localhost:5000/ or http://localhost:5000/catalog
 
-<b>4.3. Logout:</b>
-    Users log out at the URL https://blogks1.appspot.com/blog/logout. After logging out, the authentication cookie is cleared.
+<b>4.3. Items</b>
+    Items of a specific category can be seen by clicking on a category. Each shown item offers a link to the description pae of the item. 
 
-<b>4.4. Blog Page:</b>
-    Blog posts can be seen at https://blogks1.appspot.com/blog/ . Posts that the current user created can be edited or deleted with the buttons
-    below the post. However, only other users can user the buttons to like/dislike the post. A post can only liked or disliked once. If the user
-    disobeys this rule, an error message occurs.
-    Users can comment on posts that a other users created but they cannot comment on their own posts. Comments can be edited or deleted.
+<b>4.4. New Item</b>
+    Users who are logged in find the button _New Item_ in the Navigation bar.
+    On the page that the user is directed after clicking on that button he can create a new item.
+    Since the URL link to each item contains the item name no special characters are permitted.
 
-<b>4.5. Create New Posts:</b>
-    Blog posts can be created at https://blogks1.appspot.com/blog/newPost. Every post needs a subject and a blog text. After creation of a new post,
-    the user is redirected to a permalink, showing the new post.
+<b>4.5. Edit/Delete:</b>
+    The user who created a specific item has the option to delete and edit an item by navigating to the description page of the item and clicking on _edit_ or _delete_.
+    
+
+
 
 
 
