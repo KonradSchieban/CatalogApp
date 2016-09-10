@@ -3,7 +3,8 @@ from sqlalchemy.orm import sessionmaker
 
 from database_setup import Base, User, Category, Item
 
-engine = create_engine('sqlite:///catalogApp.db')
+engine = create_engine('postgresql:///catalogApp')
+#engine = create_engine('sqlite:///catalogApp.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -19,9 +20,9 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Drop all tables if exists and recreate them
+Item.__table__.drop(engine, checkfirst=True)
 User.__table__.drop(engine, checkfirst=True)
 Category.__table__.drop(engine, checkfirst=True)
-Item.__table__.drop(engine, checkfirst=True)
 
 Base.metadata.create_all(engine)
 

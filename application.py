@@ -28,7 +28,8 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
 # SETUP DATABASE
-engine = create_engine('sqlite:///catalogApp.db')
+#engine = create_engine('sqlite:///catalogApp.db')
+engine = create_engine('postgresql:///catalogApp')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
