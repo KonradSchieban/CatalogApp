@@ -29,7 +29,7 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
 
 # SETUP DATABASE
 #engine = create_engine('sqlite:///catalogApp.db')
-engine = create_engine('postgresql:///catalogApp')
+engine = create_engine('postgresql://postgres:password1234.@catalogapp.cjqlyhntilau.us-west-2.rds.amazonaws.com:5432/catalogapp')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -442,4 +442,4 @@ def show_login():
 if __name__ == '__main__':
     app.secret_key = "password1234."
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0')

@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database_setup import Base, User, Category, Item
 
-engine = create_engine('postgresql:///catalogApp')
+engine = create_engine('postgresql://postgres:password1234.@catalogapp.cjqlyhntilau.us-west-2.rds.amazonaws.com:5432/catalogapp')
 #engine = create_engine('sqlite:///catalogApp.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
